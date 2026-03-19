@@ -1,4 +1,4 @@
-package com.demo.messanger.repository;
+package com.demo.messanger.repositories;
 
 import com.demo.messanger.models.Message;
 import com.demo.messanger.models.User;

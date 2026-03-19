@@ -28,17 +28,23 @@ public class Message {
         this.user = user;
     }
 
-    public String getMessage(){
+    public String getMessage(){                         //Getters
         return message;
+    }
+
+    public User getUser(){
+        return user;
     }
 
     public void setMessage(String message){
         this.message = message;
     }
 
-    public User getUser(){
-        return user;
+    public void setUser(User user){
+        this.user = user;
     }
+
+
 
 
 

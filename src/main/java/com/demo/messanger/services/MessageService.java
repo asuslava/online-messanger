@@ -1,8 +1,8 @@
-package com.demo.messanger.service;
+package com.demo.messanger.services;
 
 import com.demo.messanger.models.Message;
 import com.demo.messanger.models.User;
-import com.demo.messanger.repository.MessageRepository;
+import com.demo.messanger.repositories.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
