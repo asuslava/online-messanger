@@ -3,13 +3,21 @@ package com.demo.messanger.models;
 import com.demo.messanger.validations.UserValidator;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
+@Table(name = "users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private String status;
+    @Column(nullable = false)
     private String password;
+    @Column(nullable = false)
     private String username;
     @Column(unique = true, nullable = false)
     private String email;
@@ -50,5 +58,20 @@ public class User {
     public String getEmail() { return email; }
     public void setStatus(String status) { this.status = status; }
     // ==========================================
+
+    @ManyToMany(mappedBy = "users")
+    private List<ChatRoom> chatRooms = new ArrayList<>();
+    public List<ChatRoom> getChatRooms() {
+        return chatRooms;
+    }
+    public void setChatRooms(List<ChatRoom> chatRooms) {
+        this.chatRooms = chatRooms;
+    }
+    public void addChatRoom(ChatRoom chatRoom){
+        this.chatRooms.add(chatRoom);
+    }
+    public void removeChatRoom(ChatRoom chatRoom){
+        this.chatRooms.remove(chatRoom);
+    }
 
 }

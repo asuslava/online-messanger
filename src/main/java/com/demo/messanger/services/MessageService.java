@@ -43,7 +43,7 @@ public class MessageService {
         if(!chatRoom.getUsers().contains(sender)){
             throw new RuntimeException("User not in chat room");
         }
-        Message message = new Message(content, sender);
+        Message message = new Message(content, sender,chatRoom);
         message.setChatRoom(chatRoom);
         return messageRepository.save(message);
     }

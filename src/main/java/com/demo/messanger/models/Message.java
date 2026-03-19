@@ -1,18 +1,19 @@
 package com.demo.messanger.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import org.springframework.cglib.core.Local;
-
+import jakarta.persistence.*;
 import java.time.LocalTime;
 
 @Entity
+@Table(name = "messages")
 public class Message {
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
+    @Column(nullable = false)
     private String message;
+    @ManyToOne
+    @JoinColumn(name = "chat_room_id", nullable = false)
     private ChatRoom chatRoom;
 
     @Id
@@ -21,13 +22,24 @@ public class Message {
 
     private LocalTime messageTime;
 
-    public Message(String message, User user){
+    public Message(){}
+
+    public Message(String message, User user ,ChatRoom chatRoom){
         if (!(message.isBlank())) {
             this.message = message;
         }
-        messageTime = LocalTime.now();
+        else {
+            throw new IllegalArgumentException("Message cannot be blank");
+        }
         this.user = user;
+        this.chatRoom = chatRoom;
     }
+    @PrePersist
+    protected void onCreate() {
+        this.messageTime = LocalTime.now();
+    }
+
+
 
     public String getMessage(){                         //Getters
         return message;
