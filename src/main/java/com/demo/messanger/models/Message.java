@@ -13,6 +13,7 @@ public class Message {
 
     private User user;
     private String message;
+    private ChatRoom chatRoom;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,6 +35,13 @@ public class Message {
 
     public User getUser(){
         return user;
+    }
+    public ChatRoom getChatRoom() {
+        return chatRoom;
+    }
+
+    public void setChatRoom(ChatRoom chatRoom) {
+        this.chatRoom = chatRoom;
     }
 
     public void setMessage(String message){
