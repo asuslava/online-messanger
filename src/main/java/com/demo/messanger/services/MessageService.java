@@ -1,12 +1,15 @@
 package com.demo.messanger.services;
 
+import com.demo.messanger.models.ChatRoom;
 import com.demo.messanger.models.Message;
 import com.demo.messanger.models.User;
 import com.demo.messanger.repositories.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.List;
 
+@Service
 public class MessageService {
 
     @Autowired
@@ -16,11 +19,11 @@ public class MessageService {
         this.messageRepository = messageRepository;
     }
 
-    public ArrayList<Message> findMessagesByUserID(Long userID){
+    public List<Message> findMessagesByUserID(Long userID){
         return messageRepository.findMessagesByUserID(userID);
     }
 
-    public ArrayList<Message> findMessagesByRoomID(Long roomID){
+    public List<Message> findMessagesByRoomID(Long roomID){
         return messageRepository.findMessagesByRoomID(roomID);
     }
 
@@ -28,7 +31,7 @@ public class MessageService {
         messageRepository.deleteMessagesByUserID(userID);
     }
 
-    public ArrayList<User> findUSerByRoomID(Long roomID){
+    public List<User> findUserByRoomID(Long roomID){
         return messageRepository.findUsersByRoomID(roomID);
     }
 
@@ -36,12 +39,13 @@ public class MessageService {
         return messageRepository.findUserByMessageID(messageID);
     }
 
-    public void sendMessage(User user, String message){
-
-    }
-
-    public void sendMessageToRoom(Long senderID, Long roomID, String message){
-
+    public Message sendMessageToRoom(User sender, ChatRoom chatRoom, String content){
+        if(!chatRoom.getUsers().contains(sender)){
+            throw new RuntimeException("User not in chat room");
+        }
+        Message message = new Message(content, sender);
+        message.setChatRoom(chatRoom);
+        return messageRepository.save(message);
     }
 
 
