@@ -1,5 +1,6 @@
 package com.demo.messanger.models;
 
+import com.demo.messanger.security.JwtUtil;
 import com.demo.messanger.validations.UserValidator;
 import jakarta.persistence.*;
 
@@ -11,6 +12,7 @@ public class User {
     private String status;
     private String password;
     private String username;
+    private String token;
     @Column(unique = true, nullable = false)
     private String email;
 
@@ -49,6 +51,7 @@ public class User {
     public String getStatus() { return status; }
     public String getEmail() { return email; }
     public void setStatus(String status) { this.status = status; }
+    public void setToken(JwtUtil token) {this.token = token}
     // ==========================================
 
 }

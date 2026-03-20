@@ -12,6 +12,7 @@ import java.util.List;
 @Service
 public class UserService {
 
+    private JwtUtil jwtUtil;
     private final UserRepository userRepository;
     private final ChatRoomRepository chatRoomRepository;
 
@@ -32,7 +33,7 @@ public class UserService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         // TODO: проверить хэш пароля
-        String token = JwtUtil.generateToken(user.getUsername());
+        String token = jwtUtil.generateToken(user.getUsername());
         user.setToken(token);
         userRepository.save(user);
         return token;
