@@ -48,6 +48,7 @@ public class Message {
     public User getUser(){
         return user;
     }
+
     public ChatRoom getChatRoom() {
         return chatRoom;
     }
