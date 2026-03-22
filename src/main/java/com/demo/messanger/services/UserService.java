@@ -25,7 +25,8 @@ public class UserService {
     }
 
     public User findByUsername(String username){
-        return userRepository.findByUsername(username).orElse(null);
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     public User findById(Long id){
@@ -34,5 +35,17 @@ public class UserService {
 
     public List<ChatRoom> getUserChatRooms(Long userId){
         return chatRoomRepository.findAllByUserId(userId);
+    }
+
+    public List<User> findAllUsers() {
+        return userRepository.findAll();
+    }
+
+    public void save(User user) {
+        userRepository.save(user);
+    }
+
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
     }
 }

@@ -1,4 +1,4 @@
-package com.demo.messanger.security;
+package com.demo.messanger.util;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;

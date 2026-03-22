@@ -1,22 +1,24 @@
 package com.demo.messanger.services;
 
 import com.demo.messanger.dto.UserDTO;
+import com.demo.messanger.dto.response.LoginResponse;
 import com.demo.messanger.mappers.UserMapper;
 import com.demo.messanger.models.User;
 import com.demo.messanger.repositories.UserRepository;
-import com.demo.messanger.security.JwtUtil;
+import com.demo.messanger.util.JwtUtil;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
 
-    private UserRepository userRepository;
-    private JwtUtil jwtUtil;
-    private UserMapper userMapper;
+    private final UserRepository userRepository;
+    private final JwtUtil jwtUtil;
+    private final UserMapper userMapper;
     private final BCryptPasswordEncoder passwordEncoder;
 
-    public AuthService(UserRepository userRepository, JwtUtil jwtUtil, UserMapper userMapper, BCryptPasswordEncoder passwordEncoder) {
+    public AuthService(UserRepository userRepository, JwtUtil jwtUtil,
+                       UserMapper userMapper, BCryptPasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.jwtUtil = jwtUtil;
         this.userMapper = userMapper;
@@ -24,42 +26,22 @@ public class AuthService {
     }
 
     public UserDTO register(String username, String email, String password) {
+        if (userRepository.findByEmail(email).isPresent()) throw new RuntimeException("Email exists");
+        if (userRepository.findByUsername(username).isPresent()) throw new RuntimeException("Username exists");
 
-        if (userRepository.findByEmail(email).isPresent()) {
-            throw new RuntimeException("User with this email already exists");
-        }
-
-        if (userRepository.findByUsername(username).isPresent()) {
-            throw new RuntimeException("User with this username already exists");
-        }
-
-        User user = new User();
-        user.setUsername(username);
-        user.setEmail(email);
-        String hashedPassword = passwordEncoder.encode(password);
-        user.setPassword(hashedPassword);
-
+        User user = new User(username, "online", email, passwordEncoder.encode(password));
         userRepository.save(user);
-
-        UserDTO dto = userMapper.toDTO(user);
-        return dto;
+        return userMapper.toDTO(user);
     }
 
-    public String login(String email, String password) {
-
+    public LoginResponse login(String email, String password) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        String hashedPassword = user.getPassword();
-        boolean matches = passwordEncoder.matches(password, hashedPassword);
-        if (!matches) {
+        if (!passwordEncoder.matches(password, user.getPassword()))
             throw new RuntimeException("Invalid password");
-        }
 
         String token = jwtUtil.generateToken(user.getUsername(), user.getId());
-
-        return token;
-
+        return new LoginResponse(token);
     }
-
 }

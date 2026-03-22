@@ -1,40 +1,58 @@
 package com.demo.messanger.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import org.springframework.cglib.core.Local;
-
-import java.time.LocalTime;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "messages")
 public class Message {
-
-    private User user;
-    private String message;
-    private ChatRoom chatRoom;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long messageID;
+    private Long id;
 
-    private LocalTime messageTime;
+    @Column(nullable = false)
+    private String content;
 
-    public Message(String message, User user){
-        if (!(message.isBlank())) {
-            this.message = message;
-        }
-        messageTime = LocalTime.now();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "chat_id", nullable = false)
+    private ChatRoom chatRoom;
+
+    @Column(nullable = false)
+    private LocalDateTime sentAt;
+
+    public Message(String content, User sender) {}
+
+    public Message(String content, User user, ChatRoom chatRoom) {
+        if (content.isBlank()) throw new IllegalArgumentException("Message cannot be blank");
+        this.content = content;
         this.user = user;
+        this.chatRoom = chatRoom;
+        this.sentAt = LocalDateTime.now();
     }
 
-    public String getMessage(){                         //Getters
-        return message;
+    public Long getId() {
+        return id;
     }
 
-    public User getUser(){
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public User getUser() {
         return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public ChatRoom getChatRoom() {
@@ -45,17 +63,11 @@ public class Message {
         this.chatRoom = chatRoom;
     }
 
-    public void setMessage(String message){
-        this.message = message;
+    public LocalDateTime getSentAt() {
+        return sentAt;
     }
 
-    public void setUser(User user){
-        this.user = user;
+    public void setSentAt(LocalDateTime sentAt) {
+        this.sentAt = sentAt;
     }
-
-
-
-
-
-
 }
