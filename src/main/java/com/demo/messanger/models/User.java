@@ -22,11 +22,9 @@ public class User {
     @OneToMany(mappedBy = "user")
     private List<Message> messages;
 
+    public User(){}
     // CONSTRUCTORS
     // ==========================================
-
-    public User(){}
-
     public User(String username, String status, String email, String password) {
         this.status = status;
         this.username = username;
@@ -45,7 +43,6 @@ public class User {
             this.password = password;
         }
     }
-
     // ==========================================
 
 
