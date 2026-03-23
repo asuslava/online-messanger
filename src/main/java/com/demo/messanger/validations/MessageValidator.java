@@ -4,12 +4,11 @@ import com.demo.messanger.models.Message;
 
 public class MessageValidator {
 
-
     public boolean checkMessage(Message message){
-        if(!(message.getMessage().isBlank())){
-            message.setMessage(message.getMessage().trim());
+        if(message.getContent() != null && !message.getContent().isBlank()){
+            message.setContent(message.getContent().trim());
             return true;
-        }else{
+        } else {
             return false;
         }
     }
