@@ -2,11 +2,11 @@ package com.demo.messanger.models;
 
 import com.demo.messanger.validations.UserValidator;
 import jakarta.persistence.*;
+
 import java.util.List;
 
-
 @Entity
-@Table(name = "users")
+@Table(name="users")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,7 +43,6 @@ public class User {
             this.password = password;
         }
     }
-
     // ==========================================
 
 
