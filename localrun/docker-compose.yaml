@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:17.9 # To download the latest image
+    container_name: postgres
+    volumes:
+      - postgresql_data:/var/lib/postgresql/data #for saving data
+    environment:
+      POSTGRES_DB: chat_db
+      POSTGRES_USER: chat_postgres
+      POSTGRES_PASSWORD: hello
+    ports:
+      - "5432:5432" # HOST_PORT:CONTAINER_PORT
+    networks:
+      - postgres_network
+
+volumes:
+  postgresql_data:
+    driver: local
+
+networks:
+  postgres_network:
+    driver: bridge
