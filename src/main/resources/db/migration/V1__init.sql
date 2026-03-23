@@ -1,4 +1,4 @@
--- Создание таблицы пользователей
+
 CREATE TABLE users (
     id BIGSERIAL PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
@@ -8,7 +8,6 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Создание таблицы сообщений
 CREATE TABLE messages (
     id BIGSERIAL PRIMARY KEY,
     content TEXT NOT NULL,
