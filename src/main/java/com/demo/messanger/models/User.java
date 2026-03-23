@@ -3,6 +3,8 @@ package com.demo.messanger.models;
 import com.demo.messanger.validations.UserValidator;
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name="users")
 public class User {
@@ -17,8 +19,14 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
 
+    @OneToMany(mappedBy = "user")
+    private List<Message> messages;
+
     // CONSTRUCTORS
     // ==========================================
+
+    public User(){}
+
     public User(String username, String status, String email, String password) {
         this.status = status;
         this.username = username;
@@ -37,7 +45,7 @@ public class User {
             this.password = password;
         }
     }
-    public User(){}
+
     // ==========================================
 
 
