@@ -25,7 +25,7 @@ public class Message {
     @Column(nullable = false)
     private LocalDateTime sentAt;
 
-    public Message(String content, User sender) {}
+    public Message() {}
 
     public Message(String content, User user, ChatRoom chatRoom) {
         if (content.isBlank()) throw new IllegalArgumentException("Message cannot be blank");
