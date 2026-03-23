@@ -22,10 +22,15 @@ public class Message {
     @JoinColumn(name = "chat_id", nullable = false)
     private ChatRoom chatRoom;
 
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDateTime sentAt;
 
-    public Message(String content, User sender) {}
+    @PrePersist
+    protected void onCreate() {
+        this.sentAt = LocalDateTime.now();
+    }
+
+    public Message() {}
 
     public Message(String content, User user, ChatRoom chatRoom) {
         if (content.isBlank()) throw new IllegalArgumentException("Message cannot be blank");
